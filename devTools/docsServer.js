@@ -8,7 +8,7 @@ const { spawn } = require('child_process')
 
 const app = new Koa()
 
-const watcher = watch(join(process.cwd(), 'src'), join(process.cwd(), 'README.md'))
+const watcher = watch([join(process.cwd(), 'src'), join(process.cwd(), 'README.md')])
 watcher.on('change', (path, stats) => {
     console.log(`${path} changed.`)
     const rebuild = spawn('typedoc', ['src/index.ts'])

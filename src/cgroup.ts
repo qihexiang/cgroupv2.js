@@ -1,9 +1,22 @@
 import { spawn } from 'child_process'
-import { resolve as pathResolve } from 'path'
+import { readFile } from 'fs/promises'
+import { join, resolve as pathResolve } from 'path'
 import { BASE_CGROUP } from './base'
 import { flatKeyedParser } from './parser'
 
+const CGROUP_ROOT = process.env.CGROUP_ROOT || '/sys/fs/cgroup/'
+
 export abstract class CGROUP extends BASE_CGROUP {
+    /**
+     * Get the cgroup of an existed process
+     * 
+     * @param pid the pid of the process
+     * @returns the path of the cgroup
+     */
+    static async GetCGROUP(pid: number): Promise<string> {
+        return readFile(`/proc/${pid}/cgroup`, 'utf-8')
+            .then(data => join(CGROUP_ROOT, data.split(':')[2].replace(/\n+$/, '')))
+    }
     /**
      * Mount cgroup v2 filesystem to specified directory and set `process.env.CGROUP_ROOT` to that directory.
      * 
