@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "fs/promises"
 import { join } from "path"
 
-export abstract class BASE_CGROUP {
+export abstract class BASE {
     readonly CGROUP_PATH: string
     constructor(path: string) {
         this.CGROUP_PATH = path

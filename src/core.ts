@@ -1,12 +1,12 @@
 import { spawn } from 'child_process'
 import { readFile } from 'fs/promises'
 import { join, resolve as pathResolve } from 'path'
-import { BASE_CGROUP } from './base'
+import { BASE } from './base'
 import { flatKeyedParser } from './parser'
 
 const CGROUP_ROOT = process.env.CGROUP_ROOT || '/sys/fs/cgroup/'
 
-export abstract class CGROUP extends BASE_CGROUP {
+export abstract class CORE extends BASE {
     /**
      * Get the cgroup of an existed process
      * 

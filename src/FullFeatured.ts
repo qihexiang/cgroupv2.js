@@ -1,12 +1,12 @@
-import { access, mkdir } from 'fs/promises'
+import { mkdir } from 'fs/promises'
 import { join } from 'path'
-import { CGROUP } from './cgroup'
+import { CORE } from './core'
 import { newLinesify, newLinesParse, spacesParse } from './parser'
 import { exists } from './utils'
 
 const CGROUP_ROOT = process.env.GROUP_ROOT || '/sys/fs/cgroup'
 
-export class FullFeatured extends CGROUP {
+export class FullFeatured extends CORE {
     /**
      * Create a Proc cgroup under cgroupfs root.
      * 
