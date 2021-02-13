@@ -3,7 +3,7 @@ import { join } from "path"
 
 export abstract class BASE {
     readonly CGROUP_PATH: string
-    constructor(path: string) {
+    protected constructor(path: string) {
         this.CGROUP_PATH = path
     }
     readInterface(interfaceName: string): Promise<string> {
