@@ -1,4 +1,4 @@
-import { mkdir } from 'fs/promises'
+import { mkdir, opendir, readdir } from 'fs/promises'
 import { join } from 'path'
 import { CORE } from './core'
 import { newLinesify, newLinesParse, spacesParse } from './parser'
@@ -98,5 +98,36 @@ export class FullFeatured extends CORE {
         }
         const data = this.readInterface('cgroup.subtree_control')
         return data.then(spacesParse)
+    }
+
+    /**
+     * Get sub-cgroups from this subcgroup.
+     */
+    subCgroup(): Promise<FullFeatured[]>
+    /**
+     * Create a sub-cgroup under this cgroup and returns it's object
+     * 
+     * @param name the directory name of the subcgroup
+     */
+    subCgroup(name: string): Promise<FullFeatured>
+    async subCgroup(name?: string): Promise<FullFeatured | FullFeatured[]> {
+        if (name) {
+            const subCgroupPath = join(this.CGROUP_PATH, name)
+            await mkdir(subCgroupPath)
+            return new FullFeatured(subCgroupPath)
+        } else {
+            return readdir(this.CGROUP_PATH, { withFileTypes: true })
+                .then(dirents => {
+                    const subCgroups: FullFeatured[] = []
+                    dirents.forEach(dirent => {
+                        if (dirent.isDirectory()) subCgroups.push(
+                            new FullFeatured(
+                                join(this.CGROUP_PATH, dirent.name)
+                            )
+                        )
+                    })
+                    return subCgroups
+                })
+        }
     }
 }
