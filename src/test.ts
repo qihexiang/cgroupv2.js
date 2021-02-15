@@ -1,12 +1,11 @@
 import cluster from 'cluster'
 import http from 'http'
-import { FullFeatured } from './FullFeatured';
-import { FullFeatured as CGROUP } from './index'
+import { CGROUP } from './index'
 
 const instaces = 4;
 
 (async function main() {
-    await FullFeatured.Mount('./tmp')
+    await CGROUP.Mount('./tmp')
     if (cluster.isMaster) {
         const [cgroup, originCG] = await Promise.all([
             CGROUP.Create('ffcgroup'),

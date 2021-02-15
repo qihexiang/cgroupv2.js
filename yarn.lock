@@ -3,9 +3,9 @@
 
 
 "@types/node@^14.14.25":
-  version "14.14.25"
-  resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-14.14.25.tgz#15967a7b577ff81383f9b888aa6705d43fbbae93"
-  integrity sha1-FZZ6e1d/+BOD+biIqmcF1D+7rpM=
+  version "14.14.27"
+  resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-14.14.27.tgz#c7127f8da0498993e13b1a42faf1303d3110d2f2"
+  integrity sha1-xxJ/jaBJiZPhOxpC+vEwPTEQ0vI=
 
 accepts@^1.3.5:
   version "1.3.7"
@@ -50,7 +50,7 @@ cache-content-type@^1.0.0:
 
 chokidar@^3.5.1:
   version "3.5.1"
-  resolved "https://registry.npm.taobao.org/chokidar/download/chokidar-3.5.1.tgz?cache=0&sync_timestamp=1610719499558&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fchokidar%2Fdownload%2Fchokidar-3.5.1.tgz#ee9ce7bbebd2b79f49f304799d5468e31e14e68a"
+  resolved "https://registry.npm.taobao.org/chokidar/download/chokidar-3.5.1.tgz#ee9ce7bbebd2b79f49f304799d5468e31e14e68a"
   integrity sha1-7pznu+vSt59J8wR5nVRo4x4U5oo=
   dependencies:
     anymatch "~3.1.1"
@@ -286,7 +286,7 @@ media-typer@0.3.0:
 
 mime-db@1.45.0:
   version "1.45.0"
-  resolved "https://registry.npm.taobao.org/mime-db/download/mime-db-1.45.0.tgz?cache=0&sync_timestamp=1600831145015&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmime-db%2Fdownload%2Fmime-db-1.45.0.tgz#cceeda21ccd7c3a745eba2decd55d4b73e7879ea"
+  resolved "https://registry.npm.taobao.org/mime-db/download/mime-db-1.45.0.tgz#cceeda21ccd7c3a745eba2decd55d4b73e7879ea"
   integrity sha1-zO7aIczXw6dF66LezVXUtz54eeo=
 
 mime-types@^2.1.18, mime-types@~2.1.24:
@@ -298,7 +298,7 @@ mime-types@^2.1.18, mime-types@~2.1.24:
 
 mime@^2.5.0:
   version "2.5.0"
-  resolved "https://registry.npm.taobao.org/mime/download/mime-2.5.0.tgz?cache=0&sync_timestamp=1610756323605&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmime%2Fdownload%2Fmime-2.5.0.tgz#2b4af934401779806ee98026bb42e8c1ae1876b1"
+  resolved "https://registry.npm.taobao.org/mime/download/mime-2.5.0.tgz#2b4af934401779806ee98026bb42e8c1ae1876b1"
   integrity sha1-K0r5NEAXeYBu6YAmu0Lowa4YdrE=
 
 ms@2.0.0:
@@ -390,10 +390,10 @@ type-is@^1.6.16:
     media-typer "0.3.0"
     mime-types "~2.1.24"
 
-typescript@^4.1.3:
-  version "4.1.3"
-  resolved "https://registry.npm.taobao.org/typescript/download/typescript-4.1.3.tgz?cache=0&sync_timestamp=1612769443765&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ftypescript%2Fdownload%2Ftypescript-4.1.3.tgz#519d582bd94cba0cf8934c7d8e8467e473f53bb7"
-  integrity sha1-UZ1YK9lMugz4k0x9joRn5HP1O7c=
+typescript@^4.1.5:
+  version "4.1.5"
+  resolved "https://registry.npm.taobao.org/typescript/download/typescript-4.1.5.tgz#123a3b214aaff3be32926f0d8f1f6e704eb89a72"
+  integrity sha1-Ejo7IUqv874ykm8Njx9ucE64mnI=
 
 vary@^1.1.2:
   version "1.1.2"

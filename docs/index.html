@@ -73,62 +73,66 @@
 					<h2>Example</h2>
 				</a>
 				<p>Some features has finished and you can use theme by class FullFeatured.</p>
-				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">cluster</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;cluster&#039;</span>
-<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">http</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;http&#039;</span>
-<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">FullFeatured</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">CGROUP</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;cgroupv2&#039;</span>
+				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">cluster</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;cluster&quot;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">http</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;http&quot;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">FullFeatured</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">CGROUP</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;cgroupv2&quot;</span><span style="color: #000000">;</span>
 
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">instaces</span><span style="color: #000000"> = </span><span style="color: #098658">4</span><span style="color: #000000">;</span>
 
 <span style="color: #000000">(</span><span style="color: #0000FF">async</span><span style="color: #000000"> </span><span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">main</span><span style="color: #000000">() {</span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">cluster</span><span style="color: #000000">.</span><span style="color: #001080">isMaster</span><span style="color: #000000">) {</span>
-<span style="color: #000000">        </span><span style="color: #0000FF">const</span><span style="color: #000000"> [</span><span style="color: #0070C1">cgroup</span><span style="color: #000000">, </span><span style="color: #0070C1">originCG</span><span style="color: #000000">] = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #267F99">Promise</span><span style="color: #000000">.</span><span style="color: #795E26">all</span><span style="color: #000000">([</span>
-<span style="color: #000000">            </span><span style="color: #0070C1">CGROUP</span><span style="color: #000000">.</span><span style="color: #795E26">Create</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;ffcgroup&#039;</span><span style="color: #000000">),</span>
-<span style="color: #000000">            </span><span style="color: #0070C1">CGROUP</span><span style="color: #000000">.</span><span style="color: #795E26">Load</span><span style="color: #000000">(</span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #0070C1">CGROUP</span><span style="color: #000000">.</span><span style="color: #795E26">GetCGROUP</span><span style="color: #000000">(</span><span style="color: #001080">process</span><span style="color: #000000">.</span><span style="color: #001080">pid</span><span style="color: #000000">))</span>
-<span style="color: #000000">        ])</span>
-<span style="color: #000000">        </span><span style="color: #008000">// Move master process to target cgroup</span>
-<span style="color: #000000">        </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">cgroup</span><span style="color: #000000">.</span><span style="color: #795E26">procs</span><span style="color: #000000">(</span><span style="color: #001080">process</span><span style="color: #000000">.</span><span style="color: #001080">pid</span><span style="color: #000000">)</span>
-<span style="color: #000000">            .</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">pids</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">                </span><span style="color: #008000">// Fork workers in new cgroup</span>
-<span style="color: #000000">                </span><span style="color: #AF00DB">for</span><span style="color: #000000"> (</span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">i</span><span style="color: #000000"> = </span><span style="color: #098658">0</span><span style="color: #000000">; </span><span style="color: #001080">i</span><span style="color: #000000"> &lt; </span><span style="color: #001080">instaces</span><span style="color: #000000">; </span><span style="color: #001080">i</span><span style="color: #000000">++) {</span>
-<span style="color: #000000">                    </span><span style="color: #001080">cluster</span><span style="color: #000000">.</span><span style="color: #795E26">fork</span><span style="color: #000000">();</span>
-<span style="color: #000000">                }</span>
-<span style="color: #000000">                </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #001080">pids</span>
-<span style="color: #000000">            })</span>
-<span style="color: #000000">        </span><span style="color: #008000">// Move master process back to original cgroup</span>
-<span style="color: #000000">        </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">originCG</span><span style="color: #000000">.</span><span style="color: #795E26">procs</span><span style="color: #000000">(</span><span style="color: #001080">process</span><span style="color: #000000">.</span><span style="color: #001080">pid</span><span style="color: #000000">)</span>
+<span style="color: #000000">  </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">cluster</span><span style="color: #000000">.</span><span style="color: #001080">isMaster</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> [</span><span style="color: #0070C1">cgroup</span><span style="color: #000000">, </span><span style="color: #0070C1">originCG</span><span style="color: #000000">] = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #267F99">Promise</span><span style="color: #000000">.</span><span style="color: #795E26">all</span><span style="color: #000000">([</span>
+<span style="color: #000000">      </span><span style="color: #0070C1">CGROUP</span><span style="color: #000000">.</span><span style="color: #795E26">Create</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;ffcgroup&quot;</span><span style="color: #000000">),</span>
+<span style="color: #000000">      </span><span style="color: #0070C1">CGROUP</span><span style="color: #000000">.</span><span style="color: #795E26">Load</span><span style="color: #000000">(</span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #0070C1">CGROUP</span><span style="color: #000000">.</span><span style="color: #795E26">GetCGROUP</span><span style="color: #000000">(</span><span style="color: #001080">process</span><span style="color: #000000">.</span><span style="color: #001080">pid</span><span style="color: #000000">)),</span>
+<span style="color: #000000">    ]);</span>
+<span style="color: #000000">    </span><span style="color: #008000">// Move master process to target cgroup</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">cgroup</span><span style="color: #000000">.</span><span style="color: #795E26">procs</span><span style="color: #000000">(</span><span style="color: #001080">process</span><span style="color: #000000">.</span><span style="color: #001080">pid</span><span style="color: #000000">).</span><span style="color: #795E26">then</span><span style="color: #000000">((</span><span style="color: #001080">pids</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">      </span><span style="color: #008000">// Fork workers in new cgroup</span>
+<span style="color: #000000">      </span><span style="color: #AF00DB">for</span><span style="color: #000000"> (</span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">i</span><span style="color: #000000"> = </span><span style="color: #098658">0</span><span style="color: #000000">; </span><span style="color: #001080">i</span><span style="color: #000000"> &lt; </span><span style="color: #001080">instaces</span><span style="color: #000000">; </span><span style="color: #001080">i</span><span style="color: #000000">++) {</span>
+<span style="color: #000000">        </span><span style="color: #001080">cluster</span><span style="color: #000000">.</span><span style="color: #795E26">fork</span><span style="color: #000000">();</span>
+<span style="color: #000000">      }</span>
+<span style="color: #000000">      </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #001080">pids</span><span style="color: #000000">;</span>
+<span style="color: #000000">    });</span>
+<span style="color: #000000">    </span><span style="color: #008000">// Move master process back to original cgroup</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">originCG</span><span style="color: #000000">.</span><span style="color: #795E26">procs</span><span style="color: #000000">(</span><span style="color: #001080">process</span><span style="color: #000000">.</span><span style="color: #001080">pid</span><span style="color: #000000">);</span>
 
-<span style="color: #000000">        </span><span style="color: #008000">// Get info from cgroup</span>
-<span style="color: #000000">        </span><span style="color: #267F99">Promise</span><span style="color: #000000">.</span><span style="color: #795E26">all</span><span style="color: #000000">(</span>
-<span style="color: #000000">            [</span><span style="color: #001080">cgroup</span><span style="color: #000000">.</span><span style="color: #795E26">type</span><span style="color: #000000">(), </span><span style="color: #001080">cgroup</span><span style="color: #000000">.</span><span style="color: #795E26">controllers</span><span style="color: #000000">(), </span><span style="color: #001080">cgroup</span><span style="color: #000000">.</span><span style="color: #795E26">procs</span><span style="color: #000000">(), </span><span style="color: #001080">cgroup</span><span style="color: #000000">.</span><span style="color: #795E26">stat</span><span style="color: #000000">()]</span>
-<span style="color: #000000">        ).</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">results</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">results</span><span style="color: #000000">))</span>
+<span style="color: #000000">    </span><span style="color: #008000">// Get info from cgroup</span>
+<span style="color: #000000">    </span><span style="color: #267F99">Promise</span><span style="color: #000000">.</span><span style="color: #795E26">all</span><span style="color: #000000">([</span>
+<span style="color: #000000">      </span><span style="color: #001080">cgroup</span><span style="color: #000000">.</span><span style="color: #795E26">type</span><span style="color: #000000">(),</span>
+<span style="color: #000000">      </span><span style="color: #001080">cgroup</span><span style="color: #000000">.</span><span style="color: #795E26">controllers</span><span style="color: #000000">(),</span>
+<span style="color: #000000">      </span><span style="color: #001080">cgroup</span><span style="color: #000000">.</span><span style="color: #795E26">procs</span><span style="color: #000000">(),</span>
+<span style="color: #000000">      </span><span style="color: #001080">cgroup</span><span style="color: #000000">.</span><span style="color: #795E26">stat</span><span style="color: #000000">(),</span>
+<span style="color: #000000">    ]).</span><span style="color: #795E26">then</span><span style="color: #000000">((</span><span style="color: #001080">results</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">results</span><span style="color: #000000">));</span>
 
-<span style="color: #000000">        </span><span style="color: #795E26">setTimeout</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">            </span><span style="color: #008000">// freeze the cgroup after 10 seconds</span>
-<span style="color: #000000">            </span><span style="color: #001080">cgroup</span><span style="color: #000000">.</span><span style="color: #795E26">freeze</span><span style="color: #000000">(</span><span style="color: #098658">1</span><span style="color: #000000">)</span>
-<span style="color: #000000">        }, </span><span style="color: #098658">10000</span><span style="color: #000000">)</span>
+<span style="color: #000000">    </span><span style="color: #795E26">setTimeout</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">      </span><span style="color: #008000">// freeze the cgroup after 10 seconds</span>
+<span style="color: #000000">      </span><span style="color: #001080">cgroup</span><span style="color: #000000">.</span><span style="color: #795E26">freeze</span><span style="color: #000000">(</span><span style="color: #098658">1</span><span style="color: #000000">);</span>
+<span style="color: #000000">    }, </span><span style="color: #098658">10000</span><span style="color: #000000">);</span>
 
-<span style="color: #000000">        </span><span style="color: #795E26">setTimeout</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">            </span><span style="color: #008000">// thaw the cgroup after 30 seconds</span>
-<span style="color: #000000">            </span><span style="color: #001080">cgroup</span><span style="color: #000000">.</span><span style="color: #795E26">freeze</span><span style="color: #000000">(</span><span style="color: #098658">0</span><span style="color: #000000">)</span>
-<span style="color: #000000">        }, </span><span style="color: #098658">30000</span><span style="color: #000000">)</span>
+<span style="color: #000000">    </span><span style="color: #795E26">setTimeout</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">      </span><span style="color: #008000">// thaw the cgroup after 30 seconds</span>
+<span style="color: #000000">      </span><span style="color: #001080">cgroup</span><span style="color: #000000">.</span><span style="color: #795E26">freeze</span><span style="color: #000000">(</span><span style="color: #098658">0</span><span style="color: #000000">);</span>
+<span style="color: #000000">    }, </span><span style="color: #098658">30000</span><span style="color: #000000">);</span>
 
-<span style="color: #000000">        </span><span style="color: #001080">cluster</span><span style="color: #000000">.</span><span style="color: #795E26">on</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;exit&#039;</span><span style="color: #000000">, (</span><span style="color: #001080">worker</span><span style="color: #000000">, </span><span style="color: #001080">code</span><span style="color: #000000">, </span><span style="color: #001080">signal</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">            </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">`worker </span><span style="color: #0000FF">${</span><span style="color: #001080">worker</span><span style="color: #000000FF">.</span><span style="color: #001080">process</span><span style="color: #000000FF">.</span><span style="color: #001080">pid</span><span style="color: #0000FF">}</span><span style="color: #A31515"> died`</span><span style="color: #000000">);</span>
-<span style="color: #000000">        });</span>
-<span style="color: #000000">        </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #0070C1">CGROUP</span><span style="color: #000000">.</span><span style="color: #795E26">GetCGROUP</span><span style="color: #000000">(</span><span style="color: #001080">process</span><span style="color: #000000">.</span><span style="color: #001080">pid</span><span style="color: #000000">))</span>
-<span style="color: #000000">    } </span><span style="color: #AF00DB">else</span><span style="color: #000000"> {</span>
-<span style="color: #000000">        </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #0070C1">CGROUP</span><span style="color: #000000">.</span><span style="color: #795E26">GetCGROUP</span><span style="color: #000000">(</span><span style="color: #001080">process</span><span style="color: #000000">.</span><span style="color: #001080">pid</span><span style="color: #000000">))</span>
+<span style="color: #000000">    </span><span style="color: #001080">cluster</span><span style="color: #000000">.</span><span style="color: #795E26">on</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;exit&quot;</span><span style="color: #000000">, (</span><span style="color: #001080">worker</span><span style="color: #000000">, </span><span style="color: #001080">code</span><span style="color: #000000">, </span><span style="color: #001080">signal</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">      </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">`worker </span><span style="color: #0000FF">${</span><span style="color: #001080">worker</span><span style="color: #000000FF">.</span><span style="color: #001080">process</span><span style="color: #000000FF">.</span><span style="color: #001080">pid</span><span style="color: #0000FF">}</span><span style="color: #A31515"> died`</span><span style="color: #000000">);</span>
+<span style="color: #000000">    });</span>
+<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #0070C1">CGROUP</span><span style="color: #000000">.</span><span style="color: #795E26">GetCGROUP</span><span style="color: #000000">(</span><span style="color: #001080">process</span><span style="color: #000000">.</span><span style="color: #001080">pid</span><span style="color: #000000">));</span>
+<span style="color: #000000">  } </span><span style="color: #AF00DB">else</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #0070C1">CGROUP</span><span style="color: #000000">.</span><span style="color: #795E26">GetCGROUP</span><span style="color: #000000">(</span><span style="color: #001080">process</span><span style="color: #000000">.</span><span style="color: #001080">pid</span><span style="color: #000000">));</span>
 
-<span style="color: #000000">        </span><span style="color: #008000">// Workers can share any TCP connection</span>
-<span style="color: #000000">        </span><span style="color: #008000">// In this case it is an HTTP server</span>
-<span style="color: #000000">        </span><span style="color: #001080">http</span><span style="color: #000000">.</span><span style="color: #795E26">createServer</span><span style="color: #000000">((</span><span style="color: #001080">req</span><span style="color: #000000">, </span><span style="color: #001080">res</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">            </span><span style="color: #001080">res</span><span style="color: #000000">.</span><span style="color: #795E26">writeHead</span><span style="color: #000000">(</span><span style="color: #098658">200</span><span style="color: #000000">);</span>
-<span style="color: #000000">            </span><span style="color: #001080">res</span><span style="color: #000000">.</span><span style="color: #795E26">end</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;hello world</span><span style="color: #EE0000">\n</span><span style="color: #A31515">&#039;</span><span style="color: #000000">);</span>
-<span style="color: #000000">        }).</span><span style="color: #795E26">listen</span><span style="color: #000000">(</span><span style="color: #098658">8000</span><span style="color: #000000">);</span>
+<span style="color: #000000">    </span><span style="color: #008000">// Workers can share any TCP connection</span>
+<span style="color: #000000">    </span><span style="color: #008000">// In this case it is an HTTP server</span>
+<span style="color: #000000">    </span><span style="color: #001080">http</span>
+<span style="color: #000000">      .</span><span style="color: #795E26">createServer</span><span style="color: #000000">((</span><span style="color: #001080">req</span><span style="color: #000000">, </span><span style="color: #001080">res</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #001080">res</span><span style="color: #000000">.</span><span style="color: #795E26">writeHead</span><span style="color: #000000">(</span><span style="color: #098658">200</span><span style="color: #000000">);</span>
+<span style="color: #000000">        </span><span style="color: #001080">res</span><span style="color: #000000">.</span><span style="color: #795E26">end</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;hello world</span><span style="color: #EE0000">\n</span><span style="color: #A31515">&quot;</span><span style="color: #000000">);</span>
+<span style="color: #000000">      })</span>
+<span style="color: #000000">      .</span><span style="color: #795E26">listen</span><span style="color: #000000">(</span><span style="color: #098658">8000</span><span style="color: #000000">);</span>
 
-<span style="color: #000000">        </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">`Worker </span><span style="color: #0000FF">${</span><span style="color: #001080">process</span><span style="color: #000000FF">.</span><span style="color: #001080">pid</span><span style="color: #0000FF">}</span><span style="color: #A31515"> started`</span><span style="color: #000000">);</span>
-<span style="color: #000000">    }</span>
-<span style="color: #000000">})().</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">)</span>
+<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">`Worker </span><span style="color: #0000FF">${</span><span style="color: #001080">process</span><span style="color: #000000FF">.</span><span style="color: #001080">pid</span><span style="color: #0000FF">}</span><span style="color: #A31515"> started`</span><span style="color: #000000">);</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">})().</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">);</span>
 </code></pre>
 				<a href="#is-this-a-full-featured-library" id="is-this-a-full-featured-library" style="color: inherit; text-decoration: none;">
 					<h2>Is this a full-featured library?</h2>
@@ -157,16 +161,132 @@
 					</li>
 				</ul>
 				<p>For example, you can create a cgroup and move current node instance into it, and then get cpu pressure info like this:</p>
-				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">FullFeatured</span><span style="color: #000000">, </span><span style="color: #001080">parser</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;cgroupv2&#039;</span>
+				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">FullFeatured</span><span style="color: #000000">, </span><span style="color: #001080">parser</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;cgroupv2&quot;</span><span style="color: #000000">;</span>
 
 <span style="color: #000000">(</span><span style="color: #0000FF">async</span><span style="color: #000000"> </span><span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">main</span><span style="color: #000000">() {</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">cgroup</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">FullFeatured</span><span style="color: #000000">.</span><span style="color: #795E26">Create</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;pcgroup&#039;</span><span style="color: #000000">)</span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">cgroup</span><span style="color: #000000">.</span><span style="color: #795E26">procs</span><span style="color: #000000">(</span><span style="color: #001080">process</span><span style="color: #000000">.</span><span style="color: #001080">pid</span><span style="color: #000000">)</span>
-<span style="color: #000000">    </span><span style="color: #001080">cgroup</span><span style="color: #000000">.</span><span style="color: #795E26">readInterface</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;cpu.pressure&#039;</span><span style="color: #000000">)</span>
-<span style="color: #000000">        .</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">parser</span><span style="color: #000000">.</span><span style="color: #001080">NestedKeyedParse</span><span style="color: #000000">)</span>
-<span style="color: #000000">        .</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">log</span><span style="color: #000000">)</span>
-<span style="color: #000000">})().</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">)</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">cgroup</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">FullFeatured</span><span style="color: #000000">.</span><span style="color: #795E26">Create</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;pcgroup&quot;</span><span style="color: #000000">);</span>
+<span style="color: #000000">  </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">cgroup</span><span style="color: #000000">.</span><span style="color: #795E26">procs</span><span style="color: #000000">(</span><span style="color: #001080">process</span><span style="color: #000000">.</span><span style="color: #001080">pid</span><span style="color: #000000">);</span>
+<span style="color: #000000">  </span><span style="color: #001080">cgroup</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">readInterface</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;cpu.pressure&quot;</span><span style="color: #000000">)</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">parser</span><span style="color: #000000">.</span><span style="color: #001080">NestedKeyedParse</span><span style="color: #000000">)</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">log</span><span style="color: #000000">);</span>
+<span style="color: #000000">})().</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #001080">error</span><span style="color: #000000">);</span>
 </code></pre>
+				<a href="#todo-list" id="todo-list" style="color: inherit; text-decoration: none;">
+					<h2>Todo List</h2>
+				</a>
+				<p>Based on cgroup interface files:</p>
+				<a href="#core-interface" id="core-interface" style="color: inherit; text-decoration: none;">
+					<h3>Core Interface</h3>
+				</a>
+				<table>
+					<thead>
+						<tr>
+							<th>Filename</th>
+							<th>RW</th>
+							<th>Type</th>
+							<th>Function</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td>cgroup.type</td>
+							<td>rw</td>
+							<td>single-value</td>
+							<td>CGROUP.type</td>
+							<td>✔</td>
+						</tr>
+						<tr>
+							<td>cgroup.procs</td>
+							<td>rw</td>
+							<td>new-line</td>
+							<td>CGROUP.procs</td>
+							<td>✔</td>
+						</tr>
+						<tr>
+							<td>cgroup.threads</td>
+							<td>rw</td>
+							<td>new-line</td>
+							<td>CGROUP.threads</td>
+							<td>✔</td>
+						</tr>
+						<tr>
+							<td>cgroup.controllers</td>
+							<td>ro</td>
+							<td>new-line</td>
+							<td>CGROUP.controllers</td>
+							<td>✔</td>
+						</tr>
+						<tr>
+							<td>cgroup.subtree_controll</td>
+							<td>rw</td>
+							<td>space-seprated</td>
+							<td>CGROUP.subtreeControll</td>
+							<td>✔</td>
+						</tr>
+						<tr>
+							<td>cgrou.events</td>
+							<td>ro</td>
+							<td>flat-keyed</td>
+							<td>CGROUP.events</td>
+							<td>✔</td>
+						</tr>
+						<tr>
+							<td>cgroup.max.descendants</td>
+							<td>rw</td>
+							<td>single-value</td>
+							<td>CGROUP.maxDescendants</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>cgroup.max.depth</td>
+							<td>rw</td>
+							<td>single-value</td>
+							<td>CGROUP.maxDepth</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>cgroup.stat</td>
+							<td>ro</td>
+							<td>flat-keyed</td>
+							<td>CGROUP.stat</td>
+							<td>✔</td>
+						</tr>
+						<tr>
+							<td>cgroup.freeze</td>
+							<td>rw</td>
+							<td>single-value</td>
+							<td>CGROUP.freeze</td>
+							<td>✔</td>
+						</tr>
+				</tbody></table>
+				<a href="#controllers" id="controllers" style="color: inherit; text-decoration: none;">
+					<h3>Controllers</h3>
+				</a>
+				<a href="#cpu" id="cpu" style="color: inherit; text-decoration: none;">
+					<h4>CPU</h4>
+				</a>
+				<a href="#memory" id="memory" style="color: inherit; text-decoration: none;">
+					<h4>Memory</h4>
+				</a>
+				<a href="#io" id="io" style="color: inherit; text-decoration: none;">
+					<h4>IO</h4>
+				</a>
+				<a href="#pid" id="pid" style="color: inherit; text-decoration: none;">
+					<h4>PID</h4>
+				</a>
+				<a href="#cpuset" id="cpuset" style="color: inherit; text-decoration: none;">
+					<h4>Cpuset</h4>
+				</a>
+				<a href="#device" id="device" style="color: inherit; text-decoration: none;">
+					<h4>Device</h4>
+				</a>
+				<a href="#rdma" id="rdma" style="color: inherit; text-decoration: none;">
+					<h4>RDMA</h4>
+				</a>
+				<a href="#hugetlb" id="hugetlb" style="color: inherit; text-decoration: none;">
+					<h4>HugeTLB</h4>
+				</a>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -189,10 +309,7 @@
 						<a href="classes/base.html" class="tsd-kind-icon">BASE</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/core.html" class="tsd-kind-icon">CORE</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/fullfeatured.html" class="tsd-kind-icon">Full<wbr>Featured</a>
+						<a href="classes/cgroup.html" class="tsd-kind-icon">CGROUP</a>
 					</li>
 				</ul>
 			</nav>
