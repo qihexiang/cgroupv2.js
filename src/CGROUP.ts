@@ -2,11 +2,17 @@ import { spawn } from "child_process";
 import { mkdir, readdir, readFile } from "fs/promises";
 import { join, resolve as pathResolve } from "path";
 import { exists } from "./Base/utils";
+import { CPU } from "./Controllers/CPU";
 import { CORE } from "./Core/CORE";
 
 const CGROUP_ROOT = process.env.CGROUP_ROOT || '/sys/fs/cgroup'
 
 export class CGROUP extends CORE {
+    cpu: CPU
+    protected constructor(path: string) {
+        super(path)
+        this.cpu = new CPU(path)
+    }
     /**
      * Get the cgroup of an existed process
      *

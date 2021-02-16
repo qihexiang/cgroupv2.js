@@ -61,6 +61,7 @@
 				<a href="#control-group-v2-nodejs-binding" id="control-group-v2-nodejs-binding" style="color: inherit; text-decoration: none;">
 					<h1>Control Group v2 Node.js binding</h1>
 				</a>
+				<p><a href="https://qihexiang.github.io/cgroupv2.js/">API Docs</a></p>
 				<a href="#how-it-works" id="how-it-works" style="color: inherit; text-decoration: none;">
 					<h2>How it works?</h2>
 				</a>
@@ -218,10 +219,10 @@
 							<td>✔</td>
 						</tr>
 						<tr>
-							<td>cgroup.subtree_controll</td>
+							<td>cgroup.subtree_control</td>
 							<td>rw</td>
 							<td>space-seprated</td>
-							<td>CGROUP.subtreeControll</td>
+							<td>CGROUP.subtreeControl</td>
 							<td>✔</td>
 						</tr>
 						<tr>
@@ -266,6 +267,66 @@
 				<a href="#cpu" id="cpu" style="color: inherit; text-decoration: none;">
 					<h4>CPU</h4>
 				</a>
+				<table>
+					<thead>
+						<tr>
+							<th>Filename</th>
+							<th>RW</th>
+							<th>Type</th>
+							<th>Function</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td>cpu.stat</td>
+							<td>ro</td>
+							<td>flat-keyed</td>
+							<td>CPU.stat</td>
+							<td>✔</td>
+						</tr>
+						<tr>
+							<td>cpu.weight</td>
+							<td>rw</td>
+							<td>single-value</td>
+							<td>CPU.weight</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>cpu.weight.nice</td>
+							<td>rw</td>
+							<td>single-value</td>
+							<td>CPU.weightNice</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>cpu.max</td>
+							<td>rw</td>
+							<td>flat-keyed(two value) <a href="https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html#cpu-interface-files">Ref</a></td>
+							<td>CPU.max</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>cpu.pressure</td>
+							<td>rw</td>
+							<td>nested-keyed</td>
+							<td>CPU.pressure</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>cpu.uclamp.min</td>
+							<td>rw</td>
+							<td>single-value</td>
+							<td>CPU.uclampMin</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>cpu.uclamp.max</td>
+							<td>rw</td>
+							<td>single-value</td>
+							<td>CPU.uclampMax</td>
+							<td></td>
+						</tr>
+				</tbody></table>
 				<a href="#memory" id="memory" style="color: inherit; text-decoration: none;">
 					<h4>Memory</h4>
 				</a>

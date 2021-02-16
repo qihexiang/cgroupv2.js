@@ -1,5 +1,7 @@
 # Control Group v2 Node.js binding
 
+[API Docs](https://qihexiang.github.io/cgroupv2.js/)
+
 ## How it works?
 
 Control Group provides an filesystem API (cgroupfs) so that user can manage cgroups by file read-write operations. This Node.js binding simply using `readFile` and `writeFile` function from `fs/promises` module.
@@ -119,7 +121,7 @@ cgroup.type|rw|single-value|CGROUP.type|✔
 cgroup.procs|rw|new-line|CGROUP.procs|✔
 cgroup.threads|rw|new-line|CGROUP.threads|✔
 cgroup.controllers|ro|new-line|CGROUP.controllers|✔
-cgroup.subtree_controll|rw|space-seprated|CGROUP.subtreeControll|✔
+cgroup.subtree_control|rw|space-seprated|CGROUP.subtreeControl|✔
 cgrou.events|ro|flat-keyed|CGROUP.events|✔
 cgroup.max.descendants|rw|single-value|CGROUP.maxDescendants|✔
 cgroup.max.depth|rw|single-value|CGROUP.maxDepth|✔
@@ -129,6 +131,16 @@ cgroup.freeze|rw|single-value|CGROUP.freeze|✔
 ### Controllers
 
 #### CPU
+
+Filename|RW|Type|Function|Status
+---|---|---|---|---
+cpu.stat|ro|flat-keyed|CPU.stat|✔
+cpu.weight|rw|single-value|CPU.weight|
+cpu.weight.nice|rw|single-value|CPU.weightNice|
+cpu.max|rw|flat-keyed(two value) [Ref](https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html#cpu-interface-files)|CPU.max|
+cpu.pressure|rw|nested-keyed|CPU.pressure|
+cpu.uclamp.min|rw|single-value|CPU.uclampMin|
+cpu.uclamp.max|rw|single-value|CPU.uclampMax|
 
 #### Memory
 
