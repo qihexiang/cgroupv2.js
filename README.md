@@ -121,8 +121,8 @@ cgroup.threads|rw|new-line|CGROUP.threads|✔
 cgroup.controllers|ro|new-line|CGROUP.controllers|✔
 cgroup.subtree_controll|rw|space-seprated|CGROUP.subtreeControll|✔
 cgrou.events|ro|flat-keyed|CGROUP.events|✔
-cgroup.max.descendants|rw|single-value|CGROUP.maxDescendants|
-cgroup.max.depth|rw|single-value|CGROUP.maxDepth|
+cgroup.max.descendants|rw|single-value|CGROUP.maxDescendants|✔
+cgroup.max.depth|rw|single-value|CGROUP.maxDepth|✔
 cgroup.stat|ro|flat-keyed|CGROUP.stat|✔
 cgroup.freeze|rw|single-value|CGROUP.freeze|✔
 

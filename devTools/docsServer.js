@@ -11,10 +11,12 @@ const app = new Koa()
 const watcher = watch([join(process.cwd(), 'src'), join(process.cwd(), 'README.md')])
 watcher.on('change', (path, stats) => {
     console.log(`${path} changed.`)
-    const rebuild = spawn('typedoc', ['src/index.ts'])
-    rebuild.stdin.pipe(process.stdin)
-    rebuild.stderr.pipe(process.stdout)
-    rebuild.stdout.pipe(process.stdout)
+    const docsBuild = spawn('typedoc', ['src/index.ts'])
+    docsBuild.stderr.pipe(process.stdout)
+    docsBuild.stdout.pipe(process.stdout)
+    const tscBuild = spawn('tsc')
+    tscBuild.stderr.pipe(process.stdout)
+    tscBuild.stdout.pipe(process.stdout)
 })
 
 app.use(async (ctx) => {
