@@ -5,8 +5,8 @@ import { CGROUP } from './index'
 const instaces = 4;
 
 (async function main() {
-    await CGROUP.Mount('./tmp')
     if (cluster.isMaster) {
+        await CGROUP.Mount('./tmp')
         const [cgroup, originCG] = await Promise.all([
             CGROUP.Create('ffcgroup'),
             CGROUP.Load(await CGROUP.GetCGROUP(process.pid))
@@ -24,16 +24,10 @@ const instaces = 4;
         await originCG.procs(process.pid)
         // Get info from cgroup
         Promise.all(
-            [cgroup.type(), cgroup.controllers(), cgroup.procs(), cgroup.stat()]
+            [cgroup.type(), cgroup.controllers(), cgroup.procs(), cgroup.stat(), cgroup.cpu.stat()]
         ).then(results => console.log(results))
         // freeze the cgroup after 10 seconds
-        setTimeout(() => {
-            cgroup.freeze(1)
-        }, 10000)
-        // thaw the cgroup after 30 seconds
-        setTimeout(() => {
-            cgroup.freeze(0)
-        }, 30000)
+        freeze_and_thaw(cgroup);
         console.log(`Master process ${process.pid} is running in ${await CGROUP.GetCGROUP(process.pid)}`)
     } else {
         http.createServer((req, res) => {
@@ -41,6 +35,20 @@ const instaces = 4;
             res.end('hello world\n');
         }).listen(8000);
 
-        console.log(`Worker ${process.pid} started ${await CGROUP.GetCGROUP(process.pid)}`);
+        console.log(`Worker ${process.pid} started in cgroup ${await CGROUP.GetCGROUP(process.pid)}`);
     }
 })().catch(console.error)
+
+
+function freeze_and_thaw(cgroup: CGROUP) {
+    setTimeout(() => {
+        cgroup.freeze(1).then(() => console.log('frozen'));
+    }, 10000);
+    // thaw the cgroup after 30 seconds
+    setTimeout(() => {
+        cgroup.freeze(0).then(() => console.log('thawd'));
+    }, 30000);
+}
+// process.on('beforeExit', async () => {
+//     await CGROUP.Umount()
+// })

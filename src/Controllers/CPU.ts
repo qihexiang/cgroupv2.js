@@ -14,15 +14,15 @@ export class CPU extends BASE {
     async stat(): Promise<cpuStat> {
         return this.readInterface('cpu.stat')
             .then(flatKeyedParser)
-            .then(result => {
-                const check = (propName: string): number | undefined => {
-                    if (result[propName] === '') return undefined
-                    else return Number(result[propName])
+            .then(data => {
+                function check(propName: string): number|undefined {
+                    if(data[propName] != undefined) return Number(data[propName])
+                    else return undefined
                 }
                 return {
-                    usage_usec: Number(result['usage_usec']),
-                    user_usec: Number(result['user_usec']),
-                    system_usec: Number(result['system_usec']),
+                    usage_usec: Number(data['usage_usec']),
+                    user_usec: Number(data['user_usec']),
+                    system_usec: Number(data['system_usec']),
                     nr_periods: check('nr_periods'),
                     nr_throttled: check('nr_throttled'),
                     throttled_usec: check('throttled_usec')

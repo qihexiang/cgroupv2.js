@@ -1,9 +1,9 @@
 {
-  "name": "cgroupv2",
-  "version": "1.0.0",
+  "name": "cgroupv2.js",
+  "version": "0.0.1",
   "description": "Node.js cgroup binding",
   "main": "index.js",
-  "repository": "https://github.com/qihexiang/node-cgroupv2",
+  "repository": "https://github.com/qihexiang/cgroupv2.js",
   "author": "Hexiang Qi <qihexiang@outlook.com>",
   "license": "MIT",
   "private": false,
